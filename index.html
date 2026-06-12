@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" style="width:100%;margin:0;padding:0;">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>SLA Performance Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -21,11 +21,11 @@
     --hover: #21262d;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { width:100%; overflow-x:hidden; }
-  body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; font-size:14px; min-height:100vh; }
+  html { width:100%; height:100%; margin:0; padding:0; }
+  body { width:100%; min-height:100vh; margin:0; padding:0; overflow-x:hidden; background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; font-size:14px; }
 
   /* HEADER */
-  .header { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; width:100%; }
+  .header { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; width:100%; box-sizing:border-box; left:0; right:0; }
   .header-left { display:flex; align-items:center; gap:12px; }
   .logo { width:48px; height:48px; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; }
   .logo img { width:100%; height:100%; object-fit:contain; }
@@ -34,16 +34,16 @@
   .update-badge { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:4px 10px; font-size:12px; color:var(--muted); }
 
   /* TABS */
-  .tabs { background:var(--surface); border-bottom:1px solid var(--border); padding:0 24px; display:flex; gap:4px; width:100%; }
+  .tabs { background:var(--surface); border-bottom:1px solid var(--border); padding:0 24px; display:flex; gap:4px; width:100%; box-sizing:border-box; }
   .tab { padding:12px 18px; cursor:pointer; border-bottom:2px solid transparent; color:var(--muted); font-size:13px; font-weight:500; transition:all .2s; white-space:nowrap; }
   .tab:hover { color:var(--text); }
   .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
 
   /* MAIN */
-  .main { padding:20px 24px; width:100%; }
+  .main { padding:20px 24px; width:100%; box-sizing:border-box; }
 
   /* KPI CARDS */
-  .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; width:100%; }
   .kpi { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; }
   .kpi-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
   .kpi-value { font-size:28px; font-weight:700; line-height:1; }
@@ -54,9 +54,9 @@
   .kpi-blue { border-left:3px solid var(--accent); }
 
   /* GRID LAYOUTS */
-  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-  .grid-3 { display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px; }
-  .full { margin-bottom:16px; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; width:100%; }
+  .grid-3 { display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px; width:100%; }
+  .full { margin-bottom:16px; width:100%; }
 
   /* PANELS */
   .panel { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; }
@@ -140,7 +140,7 @@
   .pane.active { display:block; }
 </style>
 </head>
-<body>
+<body style="width:100%;margin:0;padding:0;overflow-x:hidden;">
 
 <!-- HEADER -->
 <div class="header">
