@@ -760,10 +760,11 @@ function slaColor(s) {
   return 'sla-r';
 }
 function slaBg(s) {
-  if(s===0) return '#8b949e22';
-  if(s>=0.9) return '#22c55e';
-  if(s>=0.7) return '#eab308';
-  return '#ef4444';
+  const isDark = document.body.classList.contains('theme-dark');
+  if(s===0) return isDark ? '#8b949e22' : '#cbd5e122';
+  if(s>=0.9) return isDark ? '#22c55e' : '#16a34a';
+  if(s>=0.7) return isDark ? '#eab308' : '#d97706';
+  return isDark ? '#ef4444' : '#dc2626';
 }
 function slaTxt(s) {
   if(s===0) return '–';
@@ -825,8 +826,8 @@ function renderKPI0() {
   document.getElementById('kpi0').innerHTML = `
     <div class="kpi kpi-blue"><div class="kpi-label">Total Supplier</div><div class="kpi-value" style="color:#60a5fa">${active}</div><div class="kpi-sub">dari ${s1suppliers.length} terdaftar</div></div>
     <div class="kpi kpi-blue"><div class="kpi-label">Total PO Issued</div><div class="kpi-value" style="color:#60a5fa;font-size:20px">${fmt(totalPoi)}</div><div class="kpi-sub">Jun 2025 – Mei 2026</div></div>
-    <div class="kpi ${overallSla>=.9?'kpi-green':overallSla>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">Overall SLA</div><div class="kpi-value" style="color:${overallSla>=.9?'#4ade80':overallSla>=.7?'#facc15':'#f87171'}">${(overallSla*100).toFixed(1)}%</div><div class="kpi-sub">Semua periode</div></div>
-    <div class="kpi ${lastFull.sla>=.9?'kpi-green':lastFull.sla>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">SLA Bulan Terakhir</div><div class="kpi-value" style="color:${lastFull.sla>=.9?'#4ade80':lastFull.sla>=.7?'#facc15':'#f87171'}">${(lastFull.sla*100).toFixed(1)}%</div><div class="kpi-sub">${shortMonth(lastFull.month)}</div></div>
+    <div class="kpi ${overallSla>=.9?'kpi-green':overallSla>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">Overall SLA</div><div class="kpi-value" style="color:var(${overallSla>=.9?'--green':overallSla>=.7?'--yellow':'--red'})">${(overallSla*100).toFixed(1)}%</div><div class="kpi-sub">Semua periode</div></div>
+    <div class="kpi ${lastFull.sla>=.9?'kpi-green':lastFull.sla>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">SLA Bulan Terakhir</div><div class="kpi-value" style="color:var(${lastFull.sla>=.9?'--green':lastFull.sla>=.7?'--yellow':'--red'})">${(lastFull.sla*100).toFixed(1)}%</div><div class="kpi-sub">${shortMonth(lastFull.month)}</div></div>
   `;
 }
 
@@ -927,8 +928,9 @@ function renderHeatmap() {
     html += `<tr><td class="name-col" title="${s.name}">${s.name}</td>`;
     cols.forEach((m,i)=>{
       const cell = s.months[i];
-      const bg = cell.poi===0 ? '#30363d22' : `${slaBg(cell.sla)}${cell.sla>=.9?'33':cell.sla>=.7?'44':'55'}`;
-      const tc = cell.poi===0 ? '#8b949e' : cell.sla>=.9?'#4ade80':cell.sla>=.7?'#facc15':'#f87171';
+      const isDark = document.body.classList.contains('theme-dark');
+      const bg = cell.poi===0 ? (isDark?'#30363d22':'#e5e8ec55') : `${slaBg(cell.sla)}${isDark?(cell.sla>=.9?'33':cell.sla>=.7?'44':'55'):(cell.sla>=.9?'2a':cell.sla>=.7?'33':'3d')}`;
+      const tc = cell.poi===0 ? (isDark?'#8b949e':'#94a3b8') : isDark?(cell.sla>=.9?'#4ade80':cell.sla>=.7?'#facc15':'#f87171'):(cell.sla>=.9?'#15803d':cell.sla>=.7?'#b45309':'#b91c1c');
       html += `<td style="background:${bg};color:${tc}" title="${s.name} – ${m}: ${slaTxt(cell.sla)}">${cell.poi===0?'–':slaTxt(cell.sla)}</td>`;
     });
     html += '</tr>';
@@ -977,8 +979,8 @@ function renderKPI1() {
   document.getElementById('kpi1').innerHTML = `
     <div class="kpi kpi-blue"><div class="kpi-label">Total Supplier Unik</div><div class="kpi-value" style="color:#60a5fa">${allSups.size}</div><div class="kpi-sub">Agt 2024 – Mei 2026</div></div>
     <div class="kpi kpi-blue"><div class="kpi-label">Total PO Issued</div><div class="kpi-value" style="color:#60a5fa;font-size:20px">${fmt(totalPoi)}</div><div class="kpi-sub">Semua periode</div></div>
-    <div class="kpi ${overall>=.9?'kpi-green':overall>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">Overall SLA</div><div class="kpi-value" style="color:${overall>=.9?'#4ade80':overall>=.7?'#facc15':'#f87171'}">${(overall*100).toFixed(1)}%</div><div class="kpi-sub">Semua periode</div></div>
-    <div class="kpi ${last.sla>=.9?'kpi-green':last.sla>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">SLA Bulan Terakhir</div><div class="kpi-value" style="color:${last.sla>=.9?'#4ade80':last.sla>=.7?'#facc15':'#f87171'}">${(last.sla*100).toFixed(1)}%</div><div class="kpi-sub">${shortMonth(last.month)}</div></div>
+    <div class="kpi ${overall>=.9?'kpi-green':overall>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">Overall SLA</div><div class="kpi-value" style="color:var(${overall>=.9?'--green':overall>=.7?'--yellow':'--red'})">${(overall*100).toFixed(1)}%</div><div class="kpi-sub">Semua periode</div></div>
+    <div class="kpi ${last.sla>=.9?'kpi-green':last.sla>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">SLA Bulan Terakhir</div><div class="kpi-value" style="color:var(${last.sla>=.9?'--green':last.sla>=.7?'--yellow':'--red'})">${(last.sla*100).toFixed(1)}%</div><div class="kpi-sub">${shortMonth(last.month)}</div></div>
   `;
 }
 
@@ -1097,8 +1099,8 @@ function renderKPI2() {
   document.getElementById('kpi2').innerHTML = `
     <div class="kpi kpi-blue"><div class="kpi-label">Total Supplier</div><div class="kpi-value" style="color:#60a5fa">${s3suppliers.length}</div><div class="kpi-sub">${s3contracts.length} kontrak aktif</div></div>
     <div class="kpi kpi-blue"><div class="kpi-label">PO Issued (${s3months[mi]})</div><div class="kpi-value" style="color:#60a5fa;font-size:20px">${fmt(totalPoi)}</div><div class="kpi-sub">${contracts} kontrak aktif</div></div>
-    <div class="kpi ${sla>=.9?'kpi-green':sla>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">SLA Bulan Ini</div><div class="kpi-value" style="color:${sla>=.9?'#4ade80':sla>=.7?'#facc15':'#f87171'}">${(sla*100).toFixed(1)}%</div><div class="kpi-sub">${s3months[mi]}</div></div>
-    <div class="kpi ${overall>=.9?'kpi-green':overall>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">Overall SLA 2026</div><div class="kpi-value" style="color:${overall>=.9?'#4ade80':overall>=.7?'#facc15':'#f87171'}">${(overall*100).toFixed(1)}%</div><div class="kpi-sub">Jan – Mei 2026</div></div>
+    <div class="kpi ${sla>=.9?'kpi-green':sla>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">SLA Bulan Ini</div><div class="kpi-value" style="color:var(${sla>=.9?'--green':sla>=.7?'--yellow':'--red'})">${(sla*100).toFixed(1)}%</div><div class="kpi-sub">${s3months[mi]}</div></div>
+    <div class="kpi ${overall>=.9?'kpi-green':overall>=.7?'kpi-yellow':'kpi-red'}"><div class="kpi-label">Overall SLA 2026</div><div class="kpi-value" style="color:var(${overall>=.9?'--green':overall>=.7?'--yellow':'--red'})">${(overall*100).toFixed(1)}%</div><div class="kpi-sub">Jan – Mei 2026</div></div>
   `;
 }
 
@@ -1206,7 +1208,7 @@ function renderContractAccordion() {
           </tr></thead><tbody>
           ${contracts.map(c=>`<tr>
             <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${c.contract}">${c.contract}</td>
-            ${c.months.map(m=>`<td class="num" style="background:${m.poi===0?'transparent':m.sla>=.9?'#22c55e18':m.sla>=.7?'#eab30818':'#ef444418'};color:${m.poi===0?'#8b949e':slaBg(m.sla)}"><span class="sla-pill ${slaColor(m.sla)}">${slaTxt(m.sla)}</span></td>`).join('')}
+            ${c.months.map(m=>`<td class="num" style="background:${m.poi===0?'transparent':m.sla>=.9?'var(--green-soft)':m.sla>=.7?'var(--yellow-soft)':'var(--red-soft)'};color:${m.poi===0?'var(--muted-2)':m.sla>=.9?'var(--green)':m.sla>=.7?'var(--yellow)':'var(--red)'}"><span class="sla-pill ${slaColor(m.sla)}">${slaTxt(m.sla)}</span></td>`).join('')}
           </tr>`).join('')}
           </tbody></table>
         </div>
@@ -1321,6 +1323,7 @@ initSheet1();
         var value = (kpi.querySelector('.kpi-value')||{}).textContent || '';
         var sub   = (kpi.querySelector('.kpi-sub')||{}).textContent || '';
         // Detect accent color from kpi class for trend coloring
+        // Presentation modal uses dark background, so keep light accents for legibility there.
         var accent = '#fff';
         if(kpi.classList.contains('kpi-green')) accent = '#34d399';
         else if(kpi.classList.contains('kpi-blue')) accent = '#60a5fa';
@@ -1415,6 +1418,7 @@ initSheet1();
 })();
 </script>
 
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
